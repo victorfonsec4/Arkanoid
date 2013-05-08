@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Kinect;
 
 namespace Arkanoid
 {
@@ -18,7 +19,10 @@ namespace Arkanoid
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        KinectSensor kinect;
+        Skeleton[] skeletonData;
+        Skeleton skeleton;
+        Texture2D colorVideo;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -34,6 +38,11 @@ namespace Arkanoid
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            kinect = KinectSensor.KinectSensors[0];
+            kinect.Start();
+            kinect.SkeletonStream.Enable();
+            kinect.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
+            kinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(kinect_AllFramesReady);
 
             base.Initialize();
         }
@@ -46,6 +55,7 @@ namespace Arkanoid
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            colorVideo = Content.Load<Texture2D>("fundo");
 
             // TODO: use this.Content to load your game content here
         }
@@ -82,10 +92,49 @@ namespace Arkanoid
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            spriteBatch.Begin();
+            DrawSkeleton(spriteBatch, new Vector2(640, 480), colorVideo);
+            spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        void kinect_AllFramesReady(object sender, AllFramesReadyEventArgs imageFrames)
+        {
+            SkeletonFrame skeletonFrame = imageFrames.OpenSkeletonFrame();
+            if (skeletonFrame != null)
+            {
+                if ((skeletonData == null) || (this.skeletonData.Length != skeletonFrame.SkeletonArrayLength))
+                {
+                    this.skeletonData = new Skeleton[skeletonFrame.SkeletonArrayLength];
+                }
+                skeletonFrame.CopySkeletonDataTo(this.skeletonData);
+            }
+            if (skeletonData != null)
+            {
+                foreach (Skeleton skel in skeletonData)
+                {
+                    if (skel.TrackingState == SkeletonTrackingState.Tracked)
+                    {
+                        skeleton = skel;
+                    }
+                }
+            }
+
+        }
+
+        private void DrawSkeleton(SpriteBatch spriteBatch, Vector2 resolution, Texture2D img)
+        {
+            if (skeleton != null)
+            {
+                foreach (Joint joint in skeleton.Joints)
+                {
+                    Vector2 position = new Vector2((((0.5f * joint.Position.X) + 0.5f) * resolution.X),
+                                                   (((-0.5f * joint.Position.Y) + 0.5f) * resolution.Y));
+                    spriteBatch.Draw(img, new Rectangle(Convert.ToInt32(position.X), Convert.ToInt32(position.Y), 10, 10), Color.Red);
+                }
+            }
         }
     }
 }
