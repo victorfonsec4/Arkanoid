@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Kinect;
+using System.Diagnostics;
 
 namespace Arkanoid
 {
@@ -25,6 +26,7 @@ namespace Arkanoid
         Texture2D colorVideo;
         Arkanoid arkanoid;
         Joint rightHand;
+        Vector2 rightHandPos;
         int height = 768;
         int width = 1024;
 
@@ -89,7 +91,10 @@ namespace Arkanoid
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            arkanoid.Update(gameTime);
+            //*Debug.WriteLine(rightHand.Position.X);
+            rightHandPos = new Vector2( ( (2*rightHand.Position.X) + 0.1f)*640, ( (0.5f*rightHand.Position.Y) + 0.5f) * 480);
+            arkanoid.Update(gameTime, rightHandPos);
+            //Debug.WriteLine(rightHandPos.X + " " + rightHand.Position.X);
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -126,10 +131,14 @@ namespace Arkanoid
             {
                 foreach (Skeleton skel in skeletonData)
                 {
-                    rightHand = skel.Joints[JointType.HandRight];
                     if (skel.TrackingState == SkeletonTrackingState.Tracked)
                     {
-                        skeleton = skel;
+                        rightHand = skel.Joints[JointType.HandRight];
+                        Debug.WriteLine(rightHand.Position.X);
+                        if (skel.TrackingState == SkeletonTrackingState.Tracked)
+                        {
+                            skeleton = skel;
+                        }
                     }
                 }
             }
