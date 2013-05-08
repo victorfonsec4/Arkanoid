@@ -23,9 +23,15 @@ namespace Arkanoid
         Skeleton[] skeletonData;
         Skeleton skeleton;
         Texture2D colorVideo;
+        Arkanoid arkanoid;
+        int height = 768;
+        int width = 1024;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = height;
+            graphics.PreferredBackBufferWidth = width;
             Content.RootDirectory = "Content";
         }
 
@@ -38,11 +44,13 @@ namespace Arkanoid
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            kinect = KinectSensor.KinectSensors[0];
+            /*kinect = KinectSensor.KinectSensors[0];
             kinect.Start();
             kinect.SkeletonStream.Enable();
             kinect.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
-            kinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(kinect_AllFramesReady);
+            kinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(kinect_AllFramesReady);*/
+            arkanoid = new Arkanoid(Content);
+            arkanoid.Initialize();
 
             base.Initialize();
         }
@@ -56,6 +64,7 @@ namespace Arkanoid
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             colorVideo = Content.Load<Texture2D>("fundo");
+            arkanoid.LoadContent();
 
             // TODO: use this.Content to load your game content here
         }
@@ -79,7 +88,7 @@ namespace Arkanoid
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
+            arkanoid.Update(gameTime);
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -94,6 +103,7 @@ namespace Arkanoid
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
             DrawSkeleton(spriteBatch, new Vector2(640, 480), colorVideo);
+            arkanoid.Draw(spriteBatch);
             spriteBatch.End();
             // TODO: Add your drawing code here
 

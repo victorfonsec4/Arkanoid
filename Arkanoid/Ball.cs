@@ -15,11 +15,11 @@ namespace Arkanoid
         private Vector2 velocity;
         private Texture2D texture;
 
-        public Ball()
+        public Ball(float radius)
         {
-            this.radius = 2;
+            this.radius = radius;
             this.position = new Vector2(512,500);
-            this.velocity = new Vector2(0, 5);
+            this.velocity = new Vector2(0, -150);
         }
 
         public Vector2 Position

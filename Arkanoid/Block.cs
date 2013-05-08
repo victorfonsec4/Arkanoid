@@ -14,9 +14,9 @@ namespace Arkanoid
         private Vector2 size;
         private Texture2D texture;
 
-        public Block(Vector2 position)
+        public Block(Vector2 position, Vector2 size)
         {
-            this.size = new Vector2(10, 2);
+            this.size = size;
             this.position = position;
         }
 
