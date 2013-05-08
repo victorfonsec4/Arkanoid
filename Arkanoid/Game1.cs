@@ -23,6 +23,7 @@ namespace Arkanoid
         Skeleton[] skeletonData;
         Skeleton skeleton;
         Texture2D colorVideo;
+        Joint rightHand;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -115,6 +116,7 @@ namespace Arkanoid
             {
                 foreach (Skeleton skel in skeletonData)
                 {
+                    rightHand = skel.Joints[JointType.HandRight];
                     if (skel.TrackingState == SkeletonTrackingState.Tracked)
                     {
                         skeleton = skel;
