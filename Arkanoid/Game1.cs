@@ -24,6 +24,7 @@ namespace Arkanoid
         Skeleton skeleton;
         Texture2D colorVideo;
         Arkanoid arkanoid;
+        Joint rightHand;
         int height = 768;
         int width = 1024;
 
@@ -44,11 +45,11 @@ namespace Arkanoid
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            /*kinect = KinectSensor.KinectSensors[0];
+            kinect = KinectSensor.KinectSensors[0];
             kinect.Start();
             kinect.SkeletonStream.Enable();
             kinect.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
-            kinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(kinect_AllFramesReady);*/
+            kinect.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(kinect_AllFramesReady);
             arkanoid = new Arkanoid(Content);
             arkanoid.Initialize();
 
@@ -125,6 +126,7 @@ namespace Arkanoid
             {
                 foreach (Skeleton skel in skeletonData)
                 {
+                    rightHand = skel.Joints[JointType.HandRight];
                     if (skel.TrackingState == SkeletonTrackingState.Tracked)
                     {
                         skeleton = skel;
