@@ -49,6 +49,10 @@ namespace Arkanoid
             {
                 return velocity;
             }
+            set
+            {
+                velocity = value;
+            }
         }
 
         public Texture2D Texture

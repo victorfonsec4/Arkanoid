@@ -47,6 +47,16 @@ namespace Arkanoid
 
         public void Update(GameTime gameTime)
         {
+            if (ball.Position.X < ball.Radius || ball.Position.X>1024-ball.Radius)
+            {
+                ball.Velocity = new Vector2(-ball.Velocity.X,ball.Velocity.Y);
+            }
+
+            if (ball.Position.Y < ball.Radius)
+            {
+                ball.Velocity = new Vector2(ball.Velocity.X, -ball.Velocity.Y);
+            }
+
             foreach (Block b in blocks)
             {
                 if (Math.Abs(ball.Position.X - b.Position.X) <= ball.Radius + b.Size.X / 2 && Math.Abs(ball.Position.Y - b.Position.Y) <= ball.Radius + b.Size.Y / 2)
