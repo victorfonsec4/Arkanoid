@@ -5,6 +5,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Kinect;
+using System.Diagnostics;
 
 namespace Arkanoid
 {
@@ -45,8 +47,9 @@ namespace Arkanoid
             bar.LoadContent(c, "bar");
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Vector2 rightHandPos)
         {
+            bar.Position = new Vector2(rightHandPos.X, 500);
             if (ball.Position.X < ball.Radius || ball.Position.X>1024-ball.Radius)
             {
                 ball.Velocity = new Vector2(-ball.Velocity.X,ball.Velocity.Y);

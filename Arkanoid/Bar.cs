@@ -22,6 +22,10 @@ namespace Arkanoid
 
         public Vector2 Position
         {
+            set
+            { 
+                this.position = value; 
+            }
             get
             {
                 return position;
