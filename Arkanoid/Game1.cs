@@ -92,7 +92,7 @@ namespace Arkanoid
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             //*Debug.WriteLine(rightHand.Position.X);
-            rightHandPos = new Vector2( ( (2*rightHand.Position.X) + 0.1f)*640, ( (0.5f*rightHand.Position.Y) + 0.5f) * 480);
+            rightHandPos = new Vector2(((2 * rightHand.Position.X) + 0.1f) * width, ((0.5f * rightHand.Position.Y) + 0.5f) * height);
             arkanoid.Update(gameTime, rightHandPos);
             //Debug.WriteLine(rightHandPos.X + " " + rightHand.Position.X);
             // TODO: Add your update logic here

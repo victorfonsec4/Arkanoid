@@ -19,7 +19,7 @@ namespace Arkanoid
         {
             this.radius = radius;
             this.position = new Vector2(512,500);
-            this.velocity = new Vector2(0, -150);
+            this.velocity = new Vector2(0, -200);
         }
 
         public Vector2 Position
@@ -66,7 +66,13 @@ namespace Arkanoid
         public void BlockImpact(Vector2 blockPos, Vector2 blockSize)
         {
             if (position.X >= blockPos.X - blockSize.X / 2 && position.X <= blockPos.X + blockSize.X / 2)
+            {
                 velocity.Y = -velocity.Y;
+                if (position.Y > blockPos.Y)
+                    position.Y = blockPos.Y + blockSize.Y / 2 + radius;
+                else
+                    position.Y = blockPos.Y - blockSize.Y / 2 - radius;
+            }
             else
                 velocity.X = -velocity.X;
         }

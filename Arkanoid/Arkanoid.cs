@@ -35,7 +35,10 @@ namespace Arkanoid
             blocks = new List<Block>();
             for(int i=0;i<20;i++)
             {
-                blocks.Add(new Block(new Vector2(blockSize.X * i + 512-10*blockSize.X, 100),blockSize));
+                for (int j = 0; j < 10; j++)
+                {
+                    blocks.Add(new Block(new Vector2(blockSize.X * i + 512 - 10 * blockSize.X + (float)0.25 * blockSize.X, 100+j*10), blockSize));
+                }
             }
         }
 
@@ -49,11 +52,23 @@ namespace Arkanoid
 
         public void Update(GameTime gameTime, Vector2 rightHandPos)
         {
-            bar.Position = new Vector2(rightHandPos.X, 500);
+            bar.Position = new Vector2(rightHandPos.X, bar.Position.Y);
+
+            if (bar.Position.X < bar.Size.X / 2)
+            {
+                bar.Position = new Vector2(bar.Size.X / 2,bar.Position.Y);
+            }
+
+            if (bar.Position.X > 1024 - bar.Size.X / 2)
+            {
+                bar.Position = new Vector2(1024 - bar.Size.X / 2, bar.Position.Y);
+            }
+
             if (ball.Position.X < ball.Radius || ball.Position.X>1024-ball.Radius)
             {
                 ball.Velocity = new Vector2(-ball.Velocity.X,ball.Velocity.Y);
             }
+
 
             if (ball.Position.Y < ball.Radius || ball.Position.Y > 768 - ball.Radius)
             {
