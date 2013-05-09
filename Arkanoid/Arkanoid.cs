@@ -55,7 +55,7 @@ namespace Arkanoid
                 ball.Velocity = new Vector2(-ball.Velocity.X,ball.Velocity.Y);
             }
 
-            if (ball.Position.Y < ball.Radius)
+            if (ball.Position.Y < ball.Radius || ball.Position.Y > 768 - ball.Radius)
             {
                 ball.Velocity = new Vector2(ball.Velocity.X, -ball.Velocity.Y);
             }

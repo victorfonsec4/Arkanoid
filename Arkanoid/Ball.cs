@@ -75,8 +75,9 @@ namespace Arkanoid
         {
             if (position.X >= barPos.X - barSize.X / 2 && position.X <= barPos.X + barSize.X / 2)
             {
-                velocity.Y = -velocity.Y;
-                velocity.X = (position.X - barPos.X) / 10;
+                float modulo = (velocity.X*velocity.X + velocity.Y* velocity.Y);
+                velocity.X = (position.X - barPos.X) * 10;
+                velocity.Y = -(float)Math.Sqrt(Math.Abs(modulo - velocity.X * velocity.X) );
             }
             else
                 velocity.X = -velocity.X;
